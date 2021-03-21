@@ -20,10 +20,15 @@ pub fn new_lru_cache<'cache, T: Display>(max_size: u32) -> LRUCache<'cache, T> {
 
 impl<'cache, T: Display> LRUCache<'cache, T> {
     pub fn add(&mut self, key: &'cache str, value: T) {
+        let already_contains = self.contains_key(key);
+
         self.map.insert(key, value);
-        self.size += 1;
         self.order.put_front(key);
-        self._maybe_kick();
+
+        if !already_contains {
+            self.size += 1;
+            self._maybe_kick();
+        }
     }
 
     pub fn remove(&mut self, key: &'cache str) {
@@ -36,10 +41,16 @@ impl<'cache, T: Display> LRUCache<'cache, T> {
         return self.map.get(key);
     }
 
+    pub fn contains_key(&self, key: &'cache str) -> bool {
+        return self.map.contains_key(key)
+    }
+
     pub fn print(&mut self) {
         for (key, value) in self.map.iter() {
             println!("{}: {}", key, value);
         }
+        self.order.print();
+        println!()
     }
 
     fn _maybe_kick(&mut self) {

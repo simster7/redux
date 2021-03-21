@@ -47,6 +47,10 @@ impl<'list> LinkedList<'list> {
     }
 
     pub fn put_front(&mut self, a: &'list str) {
+        if self.contains(a) {
+            self.remove(a);
+        }
+
         self.connect(a, self._get_first());
         self.connect("^", a)
     }
@@ -59,7 +63,20 @@ impl<'list> LinkedList<'list> {
         return None
     }
 
+    pub fn contains(&self, a: &'list str) -> bool {
+        return self.prev.contains_key(a)
+    }
+
     pub fn remove(&mut self, a: &'list str) {
         self.connect(self.prev[a], self.next[a]);
+    }
+
+    pub fn print(&self) {
+        let mut curr = self.next["^"];
+        while curr != "$" {
+            print!("{} ", curr);
+            curr = self.next[curr];
+        }
+        println!()
     }
 }

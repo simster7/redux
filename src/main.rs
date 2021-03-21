@@ -18,6 +18,10 @@ fn main() {
     cache.add("6", 6);
     cache.add("7", 7);
     cache.print();
+    cache.add("3", 3);
+    cache.add("8", 8);
+    println!("3 should not be kicked");
+    cache.print();
 
 }
 

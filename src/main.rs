@@ -3,6 +3,7 @@ use std::io::stdin;
 
 mod lru_cache;
 mod linked_list;
+mod hash_map;
 
 fn main() {
     // println!("Cache size?");
